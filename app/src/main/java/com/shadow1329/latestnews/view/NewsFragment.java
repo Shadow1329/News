@@ -63,7 +63,7 @@ public class NewsFragment extends Fragment implements NewsView{
 
     @Override
     public void setNewsList(List<News> newsList) {
-        mAdapter = new NewsAdapter(newsList);
+        mAdapter = new NewsAdapter(getActivity(), newsList);
         mRecyclerView.setAdapter(mAdapter);
     }
 }

@@ -1,7 +1,9 @@
 package com.shadow1329.latestnews.view;
 
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +12,21 @@ import android.widget.TextView;
 
 import com.shadow1329.latestnews.R;
 import com.shadow1329.latestnews.model.News;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     private List<News> mDataset;
+    private Context mContext;
 
 
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public NewsAdapter(List<News> myDataset) {
+    public NewsAdapter(Context context, List<News> myDataset) {
+        mContext = context;
         mDataset = myDataset;
     }
 
@@ -40,9 +45,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        Log.d("NewsAdapter", "Bind " + position + " element");
         holder.mHeader.setText(mDataset.get(position).getTitle());
         holder.mDescription.setText(mDataset.get(position).getDescription());
-        //new DownloadImageTask(holder.mImage).execute(mDataset.get(position).getUrlToImage());
+        Picasso.with(mContext).load(mDataset.get(position).getUrlToImage()).into(holder.mImage);
     }
 
 
