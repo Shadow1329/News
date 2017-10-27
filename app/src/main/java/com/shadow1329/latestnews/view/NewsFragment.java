@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.shadow1329.latestnews.R;
 import com.shadow1329.latestnews.model.News;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class NewsFragment extends Fragment implements NewsView{
 
+    private ProgressBar mNewsLoadingProgress;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -38,6 +40,8 @@ public class NewsFragment extends Fragment implements NewsView{
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        mNewsLoadingProgress = (ProgressBar)rootView.findViewById(R.id.newsLoadingProgress);
+
         mNewsPresenter = new NewsPresenter();
 
         return rootView;
@@ -49,7 +53,7 @@ public class NewsFragment extends Fragment implements NewsView{
         super.onResume();
 
         mNewsPresenter.attachView(this);
-        mNewsPresenter.getNewsList();
+        getNewsList();
     }
 
 
@@ -65,5 +69,12 @@ public class NewsFragment extends Fragment implements NewsView{
     public void setNewsList(List<News> newsList) {
         mAdapter = new NewsAdapter(getActivity(), newsList);
         mRecyclerView.setAdapter(mAdapter);
+        mNewsLoadingProgress.setVisibility(View.GONE);
+    }
+
+
+    private void getNewsList() {
+        mNewsPresenter.getNewsList();
+        mNewsLoadingProgress.setVisibility(View.VISIBLE);
     }
 }
